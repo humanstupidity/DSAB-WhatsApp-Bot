@@ -25,7 +25,10 @@ if(fs.existsSync(SESSION_FILE_PATH)) {
 }
 
 const client = new Client({
-    session: sessionData
+    session: sessionData,
+    puppeteer: {
+        browserWSEndpoint: `ws://browser:3000?timeout=120000`
+    }
 });
 
 client.on('authenticated', (session) => {
@@ -48,8 +51,8 @@ client.on('ready', () => {
 client.on('message', async message => {
     if (message.body === '!plan') {
         let SeasonId = await inst.getCurrentSeasonId();
-        let LeaugeId = await inst.getLeaugeId(SeasonId);
-        let path = await inst.getGamePlan(SeasonId, LeaugeId);
+        let LeagueId = await inst.getLeagueId(SeasonId);
+        let path = await inst.getGamePlan(SeasonId, LeagueId);
 
         let media = MessageMedia.fromFilePath(path);
 
@@ -58,15 +61,15 @@ client.on('message', async message => {
 
     if (message.body === '!rang') {
         let SeasonId = await inst.getCurrentSeasonId();
-        let LeaugeId = await inst.getLeaugeId(SeasonId);
+        let LeaugeId = await inst.getLeagueId(SeasonId);
         let path1 = await inst.getRanking(SeasonId, LeaugeId);
 
-        pdf2img.convert(path.resolve(path1) , function(err, info) {
-            if (err) console.log(err)
+        pdf2img.convert(path.resolve(path1), function (err, info) {
+            if (err) console.log(err);
             else console.log(info);
-           
+        
             let media = MessageMedia.fromFilePath(info.message[0].path);
-
+        
             client.sendMessage(message.from, media);
           });
 
@@ -75,18 +78,21 @@ client.on('message', async message => {
 
 });
 
-(async()=>{client.initialize();
+  client.initialize();
 
-let SeasonId = await inst.getCurrentSeasonId();
-let LeaugeId = await inst.getLeaugeId(SeasonId);
-let path1 = await inst.getRanking(SeasonId, LeaugeId);
+// (async () => {
+//   client.initialize();
 
-pdf2img.convert(path.resolve(path1) , function(err, info) {
-    if (err) console.log(err)
-    else console.log(info);
-   
-    let media = MessageMedia.fromFilePath(info.message[0].path);
+//   let SeasonId = await inst.getCurrentSeasonId();
+//   let LeaugeId = await inst.getLeagueId(SeasonId);
+//   let path1 = await inst.getRanking(SeasonId, LeaugeId);
 
-    client.sendMessage(message.from, media);
-  });
-})();
+//   pdf2img.convert(path.resolve(path1), function (err, info) {
+//     if (err) console.log(err);
+//     else console.log(info);
+
+//     let media = MessageMedia.fromFilePath(info.message[0].path);
+
+//     client.sendMessage(message.from, media);
+//   });
+// })();

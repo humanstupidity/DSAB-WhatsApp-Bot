@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  campaigngroups:
+    image: ${DOCKER_REGISTRY-}dsab-bot
+    build: .
+    command: 'nodemon --ignore "session.json" --ignore "output/*" --ignore "tmp/*" --inspect=0.0.0.0:9229 app.js'
+    ports:
+      - '9233:9229'
+    volumes:
+      - './:/usr/src/app'
+      - /usr/src/app/node_modules/
+    networks:
+      backend: null  
+  browser:
+    image: browserless/chrome:latest
+    environment:
+      - PREBOOT_CHROME=true
+      - KEEP_ALIVE=true
+      - CHROME_REFRESH_TIME=-1
+      - MAX_CONCURRENT_SESSIONS=1
+      - MAX_QUEUE_LENGTH=20
+      - CONNECTION_TIMEOUT=-1
+      - ENABLE_CORS=true
+    networks:
+      backend: null   
+networks:
+  backend: null

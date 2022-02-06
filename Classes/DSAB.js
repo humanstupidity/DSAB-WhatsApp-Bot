@@ -25,7 +25,7 @@ module.exports = class DSAB {
         return queryObject.saison;
     }
 
-    async getLeaugeId(seasonId) {
+    async getLeagueId(seasonId) {
         const leagueURL = `https://dsab-vfs.de/VFSProject/WebObjects/VFSProject.woa/wa/rangListen?typ=saisonLigen&saison=${seasonId}`;
         let response = await fetch(leagueURL);
         let body1 = await response.text();

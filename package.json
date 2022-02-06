@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
+    "gm": "^1.23.1",
     "node-fetch": "^2.6.0",
     "pdf2img": "^0.5.0",
     "pdf2pic": "^2.1.4",

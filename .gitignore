@@ -2,6 +2,9 @@
 
 # Whatsapp session data
 session.json
+.history
+.vscode
+/output
 
 # compiled output
 /dist
